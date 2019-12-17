@@ -1,0 +1,34 @@
+﻿@model List<NewsFeed>
+
+@using (Html.BeginForm("Search", "Home", FormMethod.Post, new { id = "searchForm" }))
+{
+    <div class="input-group mb-3 input-group-sm">
+        <input type="text" name="searchText" class="form-control" autocomplete="off" placeholder="Search News" aria-label="Search News" aria-describedby="basic-addon2" style="max-width: 100%!important;">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+        </div>
+    </div>
+}
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="card" style="height: 11rem;">
+            <div class="card-header">
+                <b>@item.Feed.Name</b>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <p class="card-text">@item.Description</p>
+                <p class="card-text"><small class="text-muted">Created By: @item.Users.Name</small> - <small class="text-muted">Date: @item.CreateDate</small></p>
+            </div>
+        </div>
+        <br />
+    }
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No data to show! <b>Please validate if your are subscribed to a Feed or there are news created!</b>
+    </div>
+}

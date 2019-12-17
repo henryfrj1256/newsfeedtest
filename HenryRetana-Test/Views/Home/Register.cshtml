@@ -1,0 +1,42 @@
+﻿@model Users
+@{
+    ViewBag.Title = "Register";
+    var inValidPassword = ViewBag.Invalid;
+}
+
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { id = "registerForm" }))
+                {
+                    <h1>Register</h1>
+
+                    <label for="inputName">Full Name</label>
+                    <input type="text" name="Name" id="inputName" class="form-control" placeholder="Full Name" required="" autofocus="" value="@Model.Name">
+
+                    <label for="userName">User Name</label>
+                    <input type="text" name="UserName" id="userName" class="form-control" placeholder="User name" required="" value="@Model.UserName">
+
+                    <label for="inputPassword">Password</label>
+                    <input type="password" name="Password" id="inputPassword" class="form-control" placeholder="Password" required="">
+
+                    <label for="inputValidatePassword">Confirm Password</label>
+                    <input type="password" name="ConfirmPassword" id="inputValidatePassword" class="form-control" placeholder="Confirm Password" required="">
+                    <br />
+                    <button class="btn btn-primary" type="submit" >Register</button>
+                    @Html.ActionLink("Cancel", "Login", "Home", new { area = "" }, new { })
+                }
+                @if (inValidPassword != null)
+                {
+                    <br />
+                    <div class="alert alert-danger" role="alert">
+                        Passwords must match!
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3"></div>
+</div>

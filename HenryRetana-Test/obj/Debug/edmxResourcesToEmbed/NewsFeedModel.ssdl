@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NewsFeedDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Feed">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="Active" Type="bit" />
+  </EntityType>
+  <EntityType Name="NewsFeed">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="varchar" MaxLength="100" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+    <Property Name="FeedId" Type="int" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="Active" Type="bit" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'C:\WORKSPACE\HENRYRETANA-TEST\HENRYRETANA-TEST\HENRYRETANA-TEST\APP_DATA\NEWSFEEDDB.MDF.dbo.Subcription' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="Subcription">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="FeedId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="FeedId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="150" />
+    <Property Name="UserName" Type="varchar" MaxLength="100" />
+    <Property Name="Password" Type="varchar" MaxLength="50" />
+    <Property Name="ConfirmPassword" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_Feed_CreatedBy">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Feed" Type="Self.Feed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Feed">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NewsFeed_CreatedBy">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="NewsFeed" Type="Self.NewsFeed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NewsFeed">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NewsFeed_FeedId">
+    <End Role="Feed" Type="Self.Feed" Multiplicity="0..1" />
+    <End Role="NewsFeed" Type="Self.NewsFeed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Feed">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NewsFeed">
+        <PropertyRef Name="FeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subcription_FeedId">
+    <End Role="Feed" Type="Self.Feed" Multiplicity="1" />
+    <End Role="Subcription" Type="Self.Subcription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Feed">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Subcription">
+        <PropertyRef Name="FeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subcription_UserId">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Subcription" Type="Self.Subcription" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Subcription">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NewsFeedDBModelStoreContainer">
+    <EntitySet Name="Feed" EntityType="Self.Feed" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NewsFeed" EntityType="Self.NewsFeed" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Subcription" EntityType="Self.Subcription" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Subcription].[UserId] AS [UserId], 
+    [Subcription].[FeedId] AS [FeedId]
+    FROM [dbo].[Subcription] AS [Subcription]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Feed_CreatedBy" Association="Self.FK_Feed_CreatedBy">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Feed" EntitySet="Feed" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NewsFeed_CreatedBy" Association="Self.FK_NewsFeed_CreatedBy">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="NewsFeed" EntitySet="NewsFeed" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NewsFeed_FeedId" Association="Self.FK_NewsFeed_FeedId">
+      <End Role="Feed" EntitySet="Feed" />
+      <End Role="NewsFeed" EntitySet="NewsFeed" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subcription_FeedId" Association="Self.FK_Subcription_FeedId">
+      <End Role="Feed" EntitySet="Feed" />
+      <End Role="Subcription" EntitySet="Subcription" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subcription_UserId" Association="Self.FK_Subcription_UserId">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Subcription" EntitySet="Subcription" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

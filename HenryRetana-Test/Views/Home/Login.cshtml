@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    var inValidUser = ViewBag.Invalid;
+}
+
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id = "loginForm" }))
+                {
+                    <h1>Welcome! Please sign in</h1>
+
+                    <label for="userName">User Name</label>
+                    <input type="text" name="UserName" id="userName" class="form-control" placeholder="User name" required="" autofocus="">
+
+                    <label for="inputPassword">Password</label>
+                    <input type="password" name="Password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                    <br />
+                    <button class="btn btn-primary" type="submit">Sign in</button>
+                    @Html.ActionLink("Register", "Register", "Home", new { area = "" }, new { })
+                }
+                @if (inValidUser != null)
+                {
+                    <br />
+                    <div class="alert alert-danger" role="alert">
+                        Invalid User Name or Password!
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3"></div>
+</div>

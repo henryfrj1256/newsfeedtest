@@ -1,0 +1,54 @@
+﻿@model List<Feed>
+@{
+    var user = new Users();
+    if (Session["User"] != null)
+    {
+        user = (Users)Session["User"];
+    }
+}
+
+<br />
+
+@using (Html.BeginForm("AddOrDeleteSubscriptions", "Management", FormMethod.Post, new { id = "loginForm" }))
+{
+
+    @Html.Hidden("add", true)
+    <label for="inputName">Feeds</label>
+    <div class="row" style="margin-left:0px;">
+        @Html.DropDownList("feedId", HenryRetana_Test.BS.FeedBusiness.GetFeedToSubscribeList(user.Id), "Select Feed", new { @class = "form-control", required = "" })&nbsp;
+        <button class="btn btn-primary" type="submit">Subscribe</button>
+    </div>
+}
+
+<br />
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        var active = item.Active != null && (bool)item.Active ? "Active" : "Inactive";
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">@item.Name</h5>
+                <p class="card-text">
+                    <b>@active</b> - <small class="text-muted">Date: @item.CreateDate</small>
+                </p>
+
+                @using (Html.BeginForm("AddOrDeleteSubscriptions", "Management", FormMethod.Post, new { id = "loginForm" }))
+                    {
+                    @Html.Hidden("add", false)
+                    @Html.Hidden("feedId", item.Id)
+                    <button class="btn btn-primary" type="submit">Unsubscribe</button>
+                }
+
+
+            </div>
+        </div>
+        <br />
+    }
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No data to show!
+    </div>
+}

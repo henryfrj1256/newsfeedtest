@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NewsFeedDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="NewsFeed">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_NewsFeed_CreatedBy" FromRole="NewsFeed" ToRole="Users" />
+    <Property Name="FeedId" Type="Int32" />
+    <NavigationProperty Name="Feed" Relationship="NewsFeedDBModel.FK_NewsFeed_FeedId" FromRole="NewsFeed" ToRole="Feed" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="NewsFeed" Relationship="Self.FK_NewsFeed_CreatedBy" FromRole="Users" ToRole="NewsFeed" />
+    <NavigationProperty Name="Feed" Relationship="NewsFeedDBModel.FK_Feed_CreatedBy" FromRole="Users" ToRole="Feed" />
+    <NavigationProperty Name="Feed1" Relationship="NewsFeedDBModel.Subcription" FromRole="Users" ToRole="Feed" />
+    <NavigationProperty Name="Feed11" Relationship="NewsFeedDBModel.Subcription1" FromRole="Users" ToRole="Feed" />
+    <NavigationProperty Name="Feed12" Relationship="NewsFeedDBModel.Subcription2" FromRole="Users" ToRole="Feed" />
+    <NavigationProperty Name="Feed13" Relationship="NewsFeedDBModel.Subcription3" FromRole="Users" ToRole="Feed" />
+    <Property Name="ConfirmPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_NewsFeed_CreatedBy">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="NewsFeed" Type="Self.NewsFeed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NewsFeed">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NewsFeedDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="NewsFeed" EntityType="Self.NewsFeed" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <AssociationSet Name="FK_NewsFeed_CreatedBy" Association="Self.FK_NewsFeed_CreatedBy">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="NewsFeed" EntitySet="NewsFeed" />
+    </AssociationSet>
+    <EntitySet Name="Feed" EntityType="NewsFeedDBModel.Feed" />
+    <AssociationSet Name="FK_Feed_CreatedBy" Association="NewsFeedDBModel.FK_Feed_CreatedBy">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Feed" EntitySet="Feed" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NewsFeed_FeedId" Association="NewsFeedDBModel.FK_NewsFeed_FeedId">
+      <End Role="Feed" EntitySet="Feed" />
+      <End Role="NewsFeed" EntitySet="NewsFeed" />
+    </AssociationSet>
+    <AssociationSet Name="Subcription" Association="NewsFeedDBModel.Subcription">
+      <End Role="Feed" EntitySet="Feed" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="Subcription1" Association="NewsFeedDBModel.Subcription1">
+      <End Role="Feed" EntitySet="Feed" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="Subcription2" Association="NewsFeedDBModel.Subcription2">
+      <End Role="Feed" EntitySet="Feed" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="Subcription3" Association="NewsFeedDBModel.Subcription3">
+      <End Role="Feed" EntitySet="Feed" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Feed">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="Active" Type="Boolean" />
+    <NavigationProperty Name="Users" Relationship="NewsFeedDBModel.FK_Feed_CreatedBy" FromRole="Feed" ToRole="Users" />
+    <NavigationProperty Name="NewsFeed" Relationship="NewsFeedDBModel.FK_NewsFeed_FeedId" FromRole="Feed" ToRole="NewsFeed" />
+    <NavigationProperty Name="Users1" Relationship="NewsFeedDBModel.Subcription" FromRole="Feed" ToRole="Users" />
+    <NavigationProperty Name="Users11" Relationship="NewsFeedDBModel.Subcription1" FromRole="Feed" ToRole="Users" />
+    <NavigationProperty Name="Users12" Relationship="NewsFeedDBModel.Subcription2" FromRole="Feed" ToRole="Users" />
+    <NavigationProperty Name="Users13" Relationship="NewsFeedDBModel.Subcription3" FromRole="Feed" ToRole="Users" />
+  </EntityType>
+  <Association Name="FK_Feed_CreatedBy">
+    <End Type="NewsFeedDBModel.Users" Role="Users" Multiplicity="0..1" />
+    <End Type="NewsFeedDBModel.Feed" Role="Feed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Feed">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NewsFeed_FeedId">
+    <End Type="NewsFeedDBModel.Feed" Role="Feed" Multiplicity="0..1" />
+    <End Type="NewsFeedDBModel.NewsFeed" Role="NewsFeed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Feed">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NewsFeed">
+        <PropertyRef Name="FeedId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Subcription">
+    <End Type="NewsFeedDBModel.Feed" Role="Feed" Multiplicity="*" />
+    <End Type="NewsFeedDBModel.Users" Role="Users" Multiplicity="*" />
+  </Association>
+  <Association Name="Subcription1">
+    <End Type="NewsFeedDBModel.Feed" Role="Feed" Multiplicity="*" />
+    <End Type="NewsFeedDBModel.Users" Role="Users" Multiplicity="*" />
+  </Association>
+  <Association Name="Subcription2">
+    <End Type="NewsFeedDBModel.Feed" Role="Feed" Multiplicity="*" />
+    <End Type="NewsFeedDBModel.Users" Role="Users" Multiplicity="*" />
+  </Association>
+  <Association Name="Subcription3">
+    <End Type="NewsFeedDBModel.Feed" Role="Feed" Multiplicity="*" />
+    <End Type="NewsFeedDBModel.Users" Role="Users" Multiplicity="*" />
+  </Association>
+</Schema>

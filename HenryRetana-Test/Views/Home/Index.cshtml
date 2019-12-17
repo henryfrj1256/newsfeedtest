@@ -1,0 +1,15 @@
+﻿@model MainModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            @Html.Partial("_partials/_Feeds", Model.FeedList)
+        </div>
+        <div class="col-sm-9">
+            @Html.Partial("_partials/_NewsFeed", Model.NewsFeedList)
+        </div>
+    </div>
+</div>

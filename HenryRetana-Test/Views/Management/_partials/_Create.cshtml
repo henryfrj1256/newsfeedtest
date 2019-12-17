@@ -1,0 +1,44 @@
+﻿@model List<Feed>
+
+<br />
+<p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseNew" role="button" aria-expanded="false" aria-controls="collapseNew">
+        Add New
+    </a>
+</p>
+<div class="collapse" id="collapseNew">
+    <div class="card card-body">
+        @using (Html.BeginForm("AddFeed", "Management", FormMethod.Post, new { id = "loginForm" }))
+        {
+            <h1>New</h1>
+
+            <label for="inputName">Name</label>
+            <input type="text" name="Name" id="inputName" class="form-control" placeholder="Name" required="" autofocus="">
+            @Html.CheckBox("Active", true, new { @checked = "checked" }) <span>Active</span>
+            <br />
+            <button class="btn btn-primary" type="submit">Save</button>
+            <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseNew">Cancel</button>
+        }
+    </div>
+    <br />
+</div>
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        var active = item.Active != null && (bool)item.Active ? "Active" : "Inactive";
+        <div class="card">                  
+            <div class="card-body">
+                <h5 class="card-title">@item.Name</h5>
+                <p class="card-text"><b>@active</b> - <small class="text-muted">Date: @item.CreateDate</small></p>
+            </div>
+        </div>
+        <br />
+    }
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No data to show!
+    </div>
+}

@@ -1,0 +1,10 @@
+﻿@model List<Feed>
+
+<div class="list-group">
+    @foreach (var item in Model)
+    {
+        @Html.ActionLink(item.Name, "GetNewsById", "Home", new { feedId = item.Id }, new { @class = "list-group-item list-group-item-action" })        
+    }
+</div>
+
+

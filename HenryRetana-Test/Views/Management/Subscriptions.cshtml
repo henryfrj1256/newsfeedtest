@@ -1,0 +1,36 @@
+﻿@model SubscriptionsModel
+@{ 
+    ViewBag.Title = "Subscriptions";    
+}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="list-group">
+                @Html.ActionLink("My News", "Index", "Management", new { @class = "list-group-item list-group-item-action" })
+                @Html.ActionLink("My Subscriptions", "Subscriptions", "Management", new { @class = "list-group-item list-group-item-action active" })
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="alert alert-info" role="alert">
+                Create or subscribe Feeds
+            </div>
+
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-create-tab" data-toggle="tab" href="#nav-create" role="tab" aria-selected="true">Create</a>
+                    <a class="nav-item nav-link" id="nav-subscribe-tab" data-toggle="tab" href="#nav-subscribe" role="tab" aria-selected="false">Subscribe</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active show" id="nav-create" role="tabpanel" aria-labelledby="nav-home-tab">
+                    @Html.Partial("_partials/_Create", Model.FeedList)
+                </div>
+                <div class="tab-pane fade" id="nav-subscribe" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    @Html.Partial("_partials/_Subscription", Model.Subscriptions)
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
